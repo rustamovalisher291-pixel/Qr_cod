@@ -1,0 +1,23 @@
+body{
+    background-color: rgb(35, 35, 35);
+}
+.body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.All{
+    margin-top: 10px;
+}
+#all{
+    width:Auto;
+    height: Auto; 
+    padding: 5px;   
+    border: none;
+    border-radius: 8px;
+    border: 2px solid rgb(26, 91, 88);
+    background-color: rgb(38, 115, 115);
+    color: white;
+    font-size: 110%;
+}
