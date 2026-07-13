@@ -1,15 +1,13 @@
 import base64
 import io
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, status
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 from typing import Optional
 from PIL import Image
 from pyzbar.pyzbar import decode
-
-from database import engine, Base, get_db
+from database import engine, Base
+import qrcode
 from models import User
-from schemas import UserCreate, UserResponse
 
 Base.metadata.create_all(bind=engine)
 
@@ -46,6 +44,27 @@ async def scan_qr_code(file: Optional[UploadFile] = File(None)):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Skanerlashda xatolik: {str(e)}")
+
+@app.post("/generate.qr/")
+async def generate_qr_code(data: dict):
+    try:
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(data.get("text"))
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+        img_buffered = io.BytesIO()
+        img.save(img_buffered, format="PNG")
+        img_str = base64.b64encode(img_buffered.getvalue()).decode("utf-8")
+
+        return {"qr_code": f"data:image/png;base64,{img_str}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"QR-kod yaratishda xatolik: {str(e)}")
 
 @app.get("/")
 def root():

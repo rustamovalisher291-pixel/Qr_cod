@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Webcam from 'react-webcam'
 import './App.css'
-
+import Login from './Login.jsx'
+import { Link } from 'react-router-dom'
 
 
 const Home = () => {
   const [qrCode, setQrCode] = useState('')
   const [fileJoylash, setFileJoylash] = useState(null)
   const [loading, setloading] = useState(false)
-  const [timerAktiv, setTimerAktiv] =useState(false)
-  const [errorMatn, setErrorMatn] =useState('')
+  const [errorMatn, setErrorMatn] = useState('')
 
-  const navigate = useNavigate()
   const webcomRef = useRef(null)
 
   const imgExport = async (imgsuratlari) => {
@@ -72,6 +70,7 @@ const Home = () => {
 
   return (
     <div className='body'>
+      <Link to="/login" className='All' id='all'>Qr Cod yaratish</Link>
             <Webcam className='All'
             audio={false}
             ref={webcomRef}

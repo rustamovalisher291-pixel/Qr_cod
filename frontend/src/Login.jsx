@@ -1,77 +1,89 @@
-import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import React, { useState } from 'react'
+import './App.css'
+import { Link } from 'react-router-dom'
+import './Home.jsx'
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [ism, setIsm] = useState('')
+  const [textgen, setTextgen] = useState('')
+  const [qrgen, setQrGen] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [errorMatn, setErrorMatn] = useState('')
 
-  const navigate = useNavigate()
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-  
-    if (!email || !password || !ism) {
-      alert("Iltimos, barcha maydonlarni to'ldiring❌")
+  const qryarat = async () => {
+    if (!textgen) {
+      setErrorMatn('Iltimos, matn kiriting!')
       return
     }
+    setErrorMatn('')
+    setLoading(true)
+    try {
+      const javob = await fetch('http://127.0.0.1:8000/generate.qr/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: textgen }),
+      })
 
-  const userData = { ism, email, password }
-    
-  try{
-    const response = await fetch('http://127.0.0.1:8000/users/', {
-    method: "POST", 
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData)  
-  })
- 
-  const data = await response.json()
-  if (response.ok) {
-    alert("Muvaffaqiyatli ro'yxatdan o'tdinginz")
-    console.log(data)
-    setEmail('')
-    setPassword('')
-    setIsm('')
-    navigate('/home')
-  } else {
-    alert("Xatolik " +  (data.detail || "Noma'lum xatolik yuz berdi❌"))
-    console.log("Xatolik yuz berdi", data)
+      const natija = await javob.json()
+
+      if (natija.qr_code) {
+        setQrGen(natija.qr_code)
+      } else {
+        setErrorMatn('QR-cod yaratib bo\'lmadi!')
+      }
+    } catch (error) {
+      console.error('QR-codni yaratishda xatolik yuz berdi!', error)
+      setErrorMatn('QR-codni yaratishda xatolik yuz berdi!')
+    } finally {
+      setLoading(false)
+    }
   }
- }catch(error) {
-   console.error("Xatolik yuz berdi:", error)
-   alert("Serverga ulanishda xatolik yuz berdi")
- } 
-
-};
 
   return (
-    <div>
-    <form onSubmit={handleSubmit}>
-      <input 
-      required
-      type="email" 
-      placeholder="email@gmail.com" 
-      value={email} 
-      onChange={(e) => setEmail(e.target.value)} />
-      <input 
-      required
-      type="password" 
-      placeholder="password" 
-      value={password} 
-      onChange={(e) => setPassword(e.target.value)} />
-      <input 
-      required
-      type="text" 
-      placeholder="ism" 
-      value={ism} 
-      onChange={(e) => setIsm(e.target.value)} />
-      <button 
-      type="submit" 
-      >Kirish</button>
-    </form>  
+    <div className='body'>
+      <Link to="/" className='All' id='all'>Qr condni skanerlash</Link>
+      <br />
+      <br />  
+      <h3 style={{ color: 'white' }}>Qr Cod yaratish</h3>
+      <input  
+        style={{ 
+          width: '300px', 
+          height: '30px', 
+          marginBottom: '10px',
+          borderRadius: '5px',
+          border: '1px solid #ccc',
+          padding: '5px',
+          fontSize: '16px',
+          outline: 'none',
+          boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
+          backgroundColor: '#000000',
+          color:"white"
+        }}
+        type="text"
+        value={textgen}
+        onChange={(e) => setTextgen(e.target.value)}
+        placeholder="Matn kiriting"
+      />
+      <button
+        className="All"
+        id="all"
+        disabled={loading}
+        onClick={qryarat}
+      >
+        {loading ? 'Yuklanmoqda...' : 'Qrcodni yaratish'}
+      </button>
+
+      {errorMatn && (
+        <span style={{ color: 'red', margin: '10px' }}>{errorMatn}</span>
+      )}
+
+      {qrgen && (
+        <div>
+          <h4 style={{ color: 'white' }}>Yaratilgan QR Cod</h4>
+          <img src={qrgen} alt="Yaratilgan QR Cod" />
+        </div>
+      )}
     </div>
   )
 }
