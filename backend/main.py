@@ -23,24 +23,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/users/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(User).filter(User.email == user_data.email).first()
-    if db_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail="Bu email allaqachon ro'yxatdan o'tgan!"
-        )
-    
-    yangi_foydalanuvchi = User(
-        ism=user_data.ism,
-        email=user_data.email,
-        password=user_data.password
-    )
-    db.add(yangi_foydalanuvchi)
-    db.commit()
-    db.refresh(yangi_foydalanuvchi)
-    return yangi_foydalanuvchi
 
 @app.post("/scan_qr/")
 async def scan_qr_code(file: Optional[UploadFile] = File(None)):
