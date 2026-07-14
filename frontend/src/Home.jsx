@@ -20,7 +20,9 @@ const Home = () => {
     konvert.append("file", imgsuratlari)
     
     try{
-      const javob = await fetch('http://127.0.0.1:8000/scan_qr/', {
+      const javob = await fetch('https://qr-cod-backend.onrender.com
+
+/scan_qr/', {
       method: "POST", 
       body: konvert  
     });
