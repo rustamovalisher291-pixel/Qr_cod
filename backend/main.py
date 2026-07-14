@@ -15,7 +15,7 @@ app = FastAPI(title="QR Scanner API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://qr-cod.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
