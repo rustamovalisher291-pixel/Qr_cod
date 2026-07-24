@@ -113,8 +113,9 @@ const Home = () => {
               <div style={{
                 marginTop: "20px",
                 padding: "10px",
-                border: "2px solid black",
-                borderRadius: "10px"
+                border: "2px solid white",
+                borderRadius: "10px",
+                color:"white",
               }}>
                 Skanerlangan QR-cod: {qrCode}
               </div>
