@@ -17,9 +17,7 @@ const Login = () => {
     setErrorMatn('')
     setLoading(true)
     try {
-      const javob = await fetch('https://qr-cod-backend.onrender.com
-
-/generate.qr/', {
+      const javob = await fetch('https://qr-cod-backend.onrender.com/generate.qr/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
