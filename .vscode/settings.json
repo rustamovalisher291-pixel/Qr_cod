@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "/home/alisher/Documents/Backedn_test/backend/.venv/bin/python",
+    "python-envs.defaultEnvManager": "ms-python.python:venv",
+    "python.analysis.extraPaths": [
+        "/home/alisher/Documents/Backedn_test/backend/.venv/lib/python3.12/site-packages"
+    ]
+}
