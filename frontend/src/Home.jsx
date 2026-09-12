@@ -15,7 +15,7 @@ const Home = () => {
   const webcomRef = useRef(null)
   //--input fileJoylash--
   const fileInputRef = useRef(null)
-  //--fayl tugam eilganda asosiy ichki tugam ham ishga tushsin--
+  //--fayl tugam ezilganda asosiy ichki tugam ham ishga tushsin--
   const buttonS = () => {
     fileInputRef.current.click();
   }
