@@ -1,6 +1,4 @@
-# Mening loyiham 
-Bu mening qrcod saytim
-## Nimalar ishlatilingan 
 ---
-kutubxona: Vite + React, FastAPI
+kutubxonalar: Vite + React, FastAPI
+dasturlash tillari: HTML, CSS, JS, Python
 ---
